@@ -1,0 +1,14 @@
+<mat-toolbar color="accent" class="toolbar">
+  <h1>The Star Wars API: Characters</h1>
+</mat-toolbar>
+<mat-progress-bar *ngIf="!(store$ | async)" mode="indeterminate"></mat-progress-bar>
+
+<app-character-filters [species]="(store$ | async)?.species"
+                       [films]="(store$ | async)?.films"
+                       [starships]="(store$ | async)?.starships"
+                       (onFilter)="onFilter($event)"></app-character-filters>
+
+
+<app-characters-list [characters]="(store$ | async)?.characters"
+                     [filters]="filters"
+                     (redirect)="redirectToCharacter($event)"></app-characters-list>

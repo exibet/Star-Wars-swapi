@@ -1,0 +1,6 @@
+<mat-toolbar color="accent" class="toolbar">
+  <h1>The Star Wars API: {{character?.name || 'Character'}}</h1>
+</mat-toolbar>
+<mat-progress-bar *ngIf="!character" mode="indeterminate"></mat-progress-bar>
+
+<app-character [character]="character"></app-character>

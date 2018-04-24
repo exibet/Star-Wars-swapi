@@ -1,0 +1,27 @@
+<div class="filters-container">
+  <ion-range-slider type="double" [min]="-1000" [max]="200" [step]="1" [from]="-900" grid="true" [to]="200"
+                    [postfix]="' Year Battle'"
+                    [disable]="!films"
+                    grid_num="150" (onFinish)="setRange($event)">
+  </ion-range-slider>
+
+  <form [formGroup]="form" class="form">
+    <mat-form-field>
+      <mat-select placeholder="Species" formControlName="species" multiple>
+        <mat-option *ngFor="let item of species" [value]="item.url">{{item.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select placeholder="Films" formControlName="films" multiple>
+        <mat-option *ngFor="let item of films" [value]="item.url">{{item.title}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select placeholder="Starships" formControlName="starships" multiple>
+        <mat-option *ngFor="let item of starships" [value]="item.url">{{item.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</div>

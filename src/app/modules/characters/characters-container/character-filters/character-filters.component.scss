@@ -1,0 +1,24 @@
+:host {
+  display: block;
+}
+
+.filters-container {
+  min-height: 64px;
+  padding: 8px 24px 0;
+}
+
+mat-slider {
+  width: 500px;
+}
+
+.form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  height: 100px;
+}
+
+ion-range-slider {
+  width: 100%;
+}

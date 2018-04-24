@@ -1,0 +1,9 @@
+<div class="characters-list">
+  <mat-card *ngFor="let item of characters | charactersPipe : filters?.films : 'films'
+                                           | charactersPipe : filters?.species : 'species'
+                                           | charactersPipe : filters?.starships : 'starships'
+                                           | rangePipe : filters?.range"
+    (click)="onRedirect(item)">
+    <mat-card-title>{{item.name}}</mat-card-title>
+  </mat-card>
+</div>

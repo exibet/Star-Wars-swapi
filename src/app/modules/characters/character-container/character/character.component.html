@@ -1,0 +1,16 @@
+<mat-list *ngIf="character">
+  <mat-list-item> <b>Birth Year: </b> <span>{{ character.birth_year}}</span></mat-list-item>
+  <mat-list-item> <b>Eye Color: </b>  <span>{{character.eye_color}}</span></mat-list-item>
+  <mat-list-item> <b>Films: </b> <span *ngFor="let item of character.films">{{item.title + ','}}</span></mat-list-item>
+  <mat-list-item> <b>Gender: </b>  <span>{{character.gender}}</span></mat-list-item>
+  <mat-list-item> <b>Hair Color: </b>  <span>{{character.hair_color}}</span></mat-list-item>
+  <mat-list-item> <b>Height: </b>  <span>{{character.height}}</span></mat-list-item>
+  <mat-list-item> <b>Mass: </b>  <span>{{character.mass}}</span></mat-list-item>
+  <mat-list-item> <b>Skin Color: </b>  <span>{{character.skin_color}}</span></mat-list-item>
+  <mat-list-item> <b>Created: </b>  <span>{{character.created | date}}</span></mat-list-item>
+  <mat-list-item> <b>Created: </b>  <span>{{character.created | date}}</span></mat-list-item>
+  <mat-list-item> <b>Edited: </b>  <span>{{character.edited | date}}</span></mat-list-item>
+  <mat-list-item> <b>Species: </b> <span *ngFor="let item of character.species">{{item.name}}</span></mat-list-item>
+  <mat-list-item> <b>Starships: </b> <span *ngFor="let item of character.starships">{{item.name + ','}}</span></mat-list-item>
+</mat-list>
+

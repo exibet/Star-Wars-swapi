@@ -1,0 +1,8 @@
+{
+  "/api/*": {
+    "target": "https://swapi.co/",
+    "secure": true,
+    "logLevel": "debug",
+    "changeOrigin": true
+  }
+}
