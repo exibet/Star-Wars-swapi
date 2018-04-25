@@ -88,7 +88,7 @@ export class CharactersService {
   }
 
   private getListEntities(url: string): Observable<any[]> {
-    return this.http.get(url, options)
+    return this.http.get(url)
       .mergeMap((res: SWApiI) => {
         return res.next
           ? this.getListEntities(res.next).map(results => res.results.concat(results))

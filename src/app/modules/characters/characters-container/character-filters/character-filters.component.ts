@@ -10,7 +10,7 @@ import { IonRangeSliderCallback } from 'ng2-ion-range-slider';
 export interface FiltersI {
   films: FilmI[];
   species: SpeciesI[];
-  starships: StarshipsI[]
+  starships: StarshipsI[];
   range: { from: number, to: number };
 }
 
@@ -47,8 +47,8 @@ export class CharacterFiltersComponent implements OnInit {
     });
   }
 
-  setRange(value: IonRangeSliderCallback) {
-    this.form.get('range').setValue({ from: value.from, to: value.to });
+  setRange({ from, to }: IonRangeSliderCallback) {
+    this.form.get('range').setValue({ from, to });
   }
 
 }
