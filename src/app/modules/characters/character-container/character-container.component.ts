@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { CharactersService } from '../services/characters.service';
 import { ActivatedRoute } from '@angular/router';
 import { CharacterI } from '../models/character.model';
+import { Store } from '@ngrx/store';
+
+import * as fromStore from '../store';
 
 @Component({
   selector: 'app-character-container',
@@ -12,13 +14,12 @@ export class CharacterContainerComponent implements OnInit {
 
   character: CharacterI;
 
-  constructor(private charactersService: CharactersService,
+  constructor(private store: Store<fromStore.CharactersState>,
               private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.charactersService.getCharacter(this.route.snapshot.params['id']).subscribe((value: CharacterI) => {
-      this.character = value;
-      console.log(value);
+    this.store.select(fromStore.getCharactersEntities).subscribe(data => {
+      this.character = data[this.route.snapshot.params['id']];
     });
   }
 
