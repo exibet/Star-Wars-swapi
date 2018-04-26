@@ -16,10 +16,6 @@ import { FilmI } from '../models/film.model';
 import { SpeciesI } from '../models/species.model';
 import { StarshipsI } from './spaceships.model';
 
-const options = {
-  headers: new HttpHeaders({'Content-Type': 'application/json'})
-};
-
 export interface SWApiI {
   count: number;
   next: string;
@@ -42,7 +38,7 @@ export class CharactersService {
   private speciesEndpoint = 'species/';
   private starshipsEndpoint = 'starships/';
 
-  store: Observable<StoreI>;
+  private store: Observable<StoreI>;
 
   constructor(private http: HttpClient) {
     this.store = this.getSWApiData();
@@ -52,7 +48,7 @@ export class CharactersService {
     const character$: Observable<CharacterI> = this.http.get(`${environment.api + this.peopleEndpoint + id}/`)
       .map((data: CharacterI) => data);
 
-      return combineLatest(character$, this.store).map(([character, store]) => {
+      return combineLatest(character$, this.getSWApiData()).map(([character, store]) => {
         const films = this.getCharacterFilms(character, store);
         const species = this.getCharacterSpecies(character, store);
         const starships = this.getCharacterStarships(character, store);
@@ -74,15 +70,26 @@ export class CharactersService {
   }
 
 
-  private getSWApiData(): Observable<StoreI> {
+  getSWApiData(): Observable<StoreI> {
     const characters$: Observable<CharacterI[]> = this.getListEntities(environment.api + this.peopleEndpoint);
     const species$: Observable<SpeciesI[]> = this.getListEntities(environment.api + this.speciesEndpoint);
     const films$: Observable<FilmI[]> = this.getListEntities(environment.api + this.filmsEndpoint);
     const starships$: Observable<StarshipsI[]> = this.getListEntities(environment.api + this.starshipsEndpoint);
 
     return combineLatest(characters$, species$, films$, starships$)
-      .map(([characters, species, films, starships]) => {
-        return { characters, species, films, starships };
+      .map(([charactersApi, speciesApi, filmsApi, starshipsApi]) => {
+
+        const characters = charactersApi.map((character: CharacterI) => {
+
+          const films = filmsApi.filter((item: FilmI) => character.films.indexOf(item.url) !== -1);
+          const species = speciesApi.filter((item: SpeciesI) => character.species.indexOf(item.url) !== -1);
+          const starships = starshipsApi.filter((item: StarshipsI) => character.starships.indexOf(item.url) !== -1);
+
+          return { ...character, films, species, starships };
+        });
+
+        return { characters, species: speciesApi, films: filmsApi, starships: starshipsApi };
+
       })
       .catch(error => Observable.throw(error));
   }

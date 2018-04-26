@@ -11,6 +11,10 @@ import { CharacterComponent } from './character-container/character/character.co
 import { CharactersService } from './services/characters.service';
 import { CharacterContainerComponent } from './character-container/character-container.component';
 
+import { StoreModule } from '@ngrx/store';
+import { reducers, effects} from './store';
+import { EffectsModule } from '@ngrx/effects';
+
 const charactersRoutes: Routes = [
   {path: '', component: CharactersContainerComponent},
   {path: ':id', component: CharacterContainerComponent},
@@ -20,6 +24,8 @@ const charactersRoutes: Routes = [
   imports: [
     SharedModule,
     RouterModule.forChild(charactersRoutes),
+    StoreModule.forFeature('characters', reducers),
+    EffectsModule.forFeature(effects)
   ],
   declarations: [
     CharactersContainerComponent,

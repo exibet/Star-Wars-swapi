@@ -6,21 +6,26 @@ import { FiltersI } from './character-filters/character-filters.component';
 import 'rxjs/add/operator/share';
 import { Router } from '@angular/router';
 
+import * as fromStore from '../store';
+import { Store } from '@ngrx/store';
+
 @Component({
   selector: 'app-characters-container',
   templateUrl: './characters-container.component.html',
   styleUrls: ['./characters-container.component.scss']
 })
+
 export class CharactersContainerComponent implements OnInit {
 
   store$: Observable<StoreI>;
   filters: FiltersI;
 
-  constructor(private charactersService: CharactersService,
+  constructor(private store: Store<fromStore.CharactersState>,
               private router: Router) { }
 
   ngOnInit() {
-    this.store$ = this.charactersService.store.share();
+    this.store$ = this.store.select(fromStore.getAllCharacters);
+    this.store.dispatch(new fromStore.LoadCharacters());
   }
 
   onFilter(value: FiltersI) {
