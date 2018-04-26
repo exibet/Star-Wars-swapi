@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { SpeciesI } from '../../models/species.model';
 import { FilmI } from '../../models/film.model';
-import { StarshipsI } from '../../services/spaceships.model';
+import { StarshipsI } from '../../models/spaceships.model';
 
 import { IonRangeSliderCallback } from 'ng2-ion-range-slider';
 

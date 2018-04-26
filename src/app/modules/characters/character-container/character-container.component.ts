@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from "@angular/router";
 import { CharacterI } from '../models/character.model';
 import { Store } from '@ngrx/store';
 
@@ -15,11 +15,16 @@ export class CharacterContainerComponent implements OnInit {
   character: CharacterI;
 
   constructor(private store: Store<fromStore.CharactersState>,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              private router: Router) { }
 
   ngOnInit() {
     this.store.select(fromStore.getCharactersEntities).subscribe(data => {
-      this.character = data[this.route.snapshot.params['id']];
+      if (data) {
+        this.character = data[this.route.snapshot.params['id']];
+      } else {
+        this.router.navigate(['characters']);
+      }
     });
   }
 

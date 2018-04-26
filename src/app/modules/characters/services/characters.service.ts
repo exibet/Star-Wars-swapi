@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
-import { environment } from 'environments/environment';
+import { environment } from '../../../../environments/environment';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
@@ -14,7 +14,7 @@ import { combineLatest } from 'rxjs/observable/combineLatest';
 import { CharacterI } from '../models/character.model';
 import { FilmI } from '../models/film.model';
 import { SpeciesI } from '../models/species.model';
-import { StarshipsI } from './spaceships.model';
+import { StarshipsI } from '../models/spaceships.model';
 
 export interface SWApiI {
   count: number;
@@ -44,32 +44,6 @@ export class CharactersService {
     this.store = this.getSWApiData();
   }
 
-  getCharacter(id: string): Observable<CharacterI> {
-    const character$: Observable<CharacterI> = this.http.get(`${environment.api + this.peopleEndpoint + id}/`)
-      .map((data: CharacterI) => data);
-
-      return combineLatest(character$, this.getSWApiData()).map(([character, store]) => {
-        const films = this.getCharacterFilms(character, store);
-        const species = this.getCharacterSpecies(character, store);
-        const starships = this.getCharacterStarships(character, store);
-
-        return { ...character, films, species, starships };
-      });
-  }
-
-  private getCharacterFilms(character: CharacterI, store: StoreI): FilmI[] {
-    return store.films.filter((item: FilmI) => character.films.indexOf(item.url) !== -1);
-  }
-
-  private getCharacterSpecies(character: CharacterI, store: StoreI): SpeciesI[] {
-    return store.species.filter((item: SpeciesI) => character.species.indexOf(item.url) !== -1);
-  }
-
-  private getCharacterStarships(character: CharacterI, store: StoreI): StarshipsI[] {
-    return store.starships.filter((item: StarshipsI) => character.starships.indexOf(item.url) !== -1);
-  }
-
-
   getSWApiData(): Observable<StoreI> {
     const characters$: Observable<CharacterI[]> = this.getListEntities(environment.api + this.peopleEndpoint);
     const species$: Observable<SpeciesI[]> = this.getListEntities(environment.api + this.speciesEndpoint);
@@ -81,9 +55,9 @@ export class CharactersService {
 
         const characters = charactersApi.map((character: CharacterI) => {
 
-          const films = filmsApi.filter((item: FilmI) => character.films.indexOf(item.url) !== -1);
-          const species = speciesApi.filter((item: SpeciesI) => character.species.indexOf(item.url) !== -1);
-          const starships = starshipsApi.filter((item: StarshipsI) => character.starships.indexOf(item.url) !== -1);
+          const films = this.getCharacterByFilter(filmsApi, character);
+          const species = this.getCharacterByFilter(speciesApi, character);
+          const starships = this.getCharacterByFilter(starshipsApi, character);
 
           return { ...character, films, species, starships };
         });
@@ -92,6 +66,10 @@ export class CharactersService {
 
       })
       .catch(error => Observable.throw(error));
+  }
+
+  getCharacterByFilter(filter: any[], character: CharacterI): FilmI[] | SpeciesI[] | StarshipsI[] {
+    return filter.filter((item: FilmI) => character.films.indexOf(item.url) !== -1);
   }
 
   private getListEntities(url: string): Observable<any[]> {

@@ -18,7 +18,7 @@ export const initialState = {
   },
   loaded: false,
   loading: false,
-  entities: {}
+  entities: null
 };
 
 export function reducer(state = initialState, action: fromCharacters.CharactersAction): CharacterState {
