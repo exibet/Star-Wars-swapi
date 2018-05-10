@@ -55,9 +55,9 @@ export class CharactersService {
 
         const characters = charactersApi.map((character: CharacterI) => {
 
-          const films = this.getCharacterByFilter(filmsApi, character);
-          const species = this.getCharacterByFilter(speciesApi, character);
-          const starships = this.getCharacterByFilter(starshipsApi, character);
+          const films = this.getCharacterByFilter(filmsApi, character, 'films');
+          const species = this.getCharacterByFilter(speciesApi, character, 'species');
+          const starships = this.getCharacterByFilter(starshipsApi, character, 'starships');
 
           return { ...character, films, species, starships };
         });
@@ -68,8 +68,8 @@ export class CharactersService {
       .catch(error => Observable.throw(error));
   }
 
-  getCharacterByFilter(filter: any[], character: CharacterI): FilmI[] | SpeciesI[] | StarshipsI[] {
-    return filter.filter((item: FilmI) => character.films.indexOf(item.url) !== -1);
+  getCharacterByFilter(filter: any[], character: CharacterI, type: string): FilmI[] | SpeciesI[] | StarshipsI[] {
+    return filter.filter((item: FilmI) => character[type].indexOf(item.url) !== -1);
   }
 
   private getListEntities(url: string): Observable<any[]> {
